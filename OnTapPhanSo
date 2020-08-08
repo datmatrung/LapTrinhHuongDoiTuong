@@ -60,6 +60,65 @@ namespace WebApplication12
     }
 }
 
+// Màn hình mảng phân số
+@using WebApplication12
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        MangPhanSo A = new MangPhanSo();
+        A.KhoiTaoMang(Request["dsPhanSo"]);
+        PhanSo kq = A.TinhTongMang();
+        chuoi = "Tổng mảng phân số là " + kq.Xuat();
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/MangPhanSo.cshtml" method="post">
+            Nhập danh sách phân số: <br />
+            <input type="text" name="dsPhanSo" value="@Request["dsPhanSo"]" placeholder="1/2,3/4,5/6" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+// Xử lý mảng phân số
+namespace WebApplication12
+{
+    public class MangPhanSo
+    {
+        public PhanSo[] dsPhanSo;
+        public void KhoiTaoMang(string s)
+        {
+            var M = s.Split(',');
+            dsPhanSo = new PhanSo[M.Length];
+            for (int i = 0; i < dsPhanSo.Length; i++)
+            {
+                dsPhanSo[i] = new PhanSo();
+                dsPhanSo[i].KhoiTao(M[i]);
+            }
+        }
+        public PhanSo TinhTongMang()
+        {
+            PhanSo P = new PhanSo();
+            P.TuSo = 0; P.MauSo = 1;
+            for (int i = 0; i < dsPhanSo.Length; i++)
+            {
+                P = P.TinhTong(dsPhanSo[i]);
+            }
+            return P;
+        }
+    }
+}
+
 // Màn hình nhập điểm
 @using WebApplication12
 @{
@@ -110,6 +169,131 @@ namespace WebApplication12
         public double TinhKhoangCach(Diem B)
         {
             return Math.Sqrt(Math.Pow(B.X - X, 2) + Math.Pow(B.Y - Y, 2));
+        }
+    }
+}
+
+// Màn hình tam giác
+@using WebApplication12
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        Diem A = new Diem();
+        A.KhoiTao(Request["DiemA"]);
+        Diem B = new Diem();
+        B.KhoiTao(Request["DiemB"]);
+        Diem C = new Diem();
+        C.KhoiTao(Request["DiemC"]);
+        TamGiac T = new TamGiac();
+        T.KhoiTao(A, B, C);
+        double kq = T.TinhChuVi();
+        chuoi = $"Chu vi tam giác là {kq}";
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/TamGiac.cshtml" method="post">
+            Nhập điểm A: <br />
+            <input type="text" name="DiemA" value="@Request["DiemA"]" placeholder="1,2" /><br />
+            Nhập điểm B: <br />
+            <input type="text" name="DiemB" value="@Request["DiemB"]" placeholder="3,4" /><br />
+            Nhập điểm C: <br />
+            <input type="text" name="DiemC" value="@Request["DiemC"]" placeholder="5,6" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+// Xử lý tam giác
+namespace WebApplication12
+{
+    public class TamGiac
+    {
+        public Diem A;
+        public Diem B;
+        public Diem C;
+        public void KhoiTao(Diem A, Diem B, Diem C)
+        {
+            this.A = A;
+            this.B = B;
+            this.C = C;
+        }
+        public double TinhChuVi()
+        {
+            double kq = 0;
+            kq += this.A.TinhKhoangCach(this.B);
+            kq += this.B.TinhKhoangCach(this.C);
+            kq += this.C.TinhKhoangCach(this.A);
+            return kq;
+        }
+    }
+}
+
+// Màn hình đa giác
+@using WebApplication12
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        DaGiac D = new DaGiac();
+        D.KhoiTao(Request["dsDiem"]);
+        double kq = D.TinhChuVi();
+        chuoi = $"Chu vi đa giác là {kq}";
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/DaGiac.cshtml" method="post">
+            Nhập danh sách các điểm: <br />
+            <input type="text" name="dsDiem" value="@Request["dsDiem"]" placeholder="1,2|3,4|5,6" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+// Xử lý đa giác
+namespace WebApplication12
+{
+    public class DaGiac
+    {
+        public Diem[] dsDiem;
+        public void KhoiTao(string s)
+        {
+            var M = s.Split('|');
+            dsDiem = new Diem[M.Length];
+            for (int i = 0; i < dsDiem.Length; i++)
+            {
+                dsDiem[i] = new Diem();
+                dsDiem[i].KhoiTao(M[i]);
+            }
+        }
+        public double TinhChuVi()
+        {
+            double kq = 0;
+            int N = dsDiem.Length;
+            for (int i = 0; i < N - 1; i++)
+            {
+                kq += dsDiem[i].TinhKhoangCach(dsDiem[i + 1]);
+            }
+            kq += dsDiem[N - 1].TinhKhoangCach(dsDiem[0]);
+            return kq;
         }
     }
 }
