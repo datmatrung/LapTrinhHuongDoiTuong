@@ -6,11 +6,11 @@
     {
         PhanSo A = new PhanSo();
         PhanSo B = new PhanSo();
-        PhanSo kq = new PhanSo();
         A.KhoiTao(Request["ps1"]);
         B.KhoiTao(Request["ps2"]);
+        PhanSo kq = new PhanSo();
         kq = A.TinhTong(B);
-        chuoi = kq.Xuat();
+        chuoi = "Tổng hai phân số là " + kq.Xuat();
     }
 }
 <!DOCTYPE html>
@@ -56,6 +56,60 @@ namespace WebApplication12
         public string Xuat()
         {
             return $"{TuSo}/{MauSo}";
+        }
+    }
+}
+
+// Màn hình nhập điểm
+@using WebApplication12
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        Diem A = new Diem();
+        Diem B = new Diem();
+        A.KhoiTao(Request["diemA"]);
+        B.KhoiTao(Request["diemB"]);
+        double kq = A.TinhKhoangCach(B);
+        chuoi = $"Khoảng cách AB là {kq}";
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/Diem.cshtml" method="post">
+            Nhập điểm A: <br />
+            <input type="text" name="diemA" value="@Request["diemA"]" placeholder="1,2" /><br />
+            Nhập điểm B: <br />
+            <input type="text" name="diemB" value="@Request["diemB"]" placeholder="3,4" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+// Xử lý điểm
+namespace WebApplication12
+{
+    public class Diem
+    {
+        public int X;
+        public int Y;
+        public void KhoiTao(string s)
+        {
+            var M = s.Split(',');
+            X = int.Parse(M[0]);
+            Y = int.Parse(M[1]);
+        }
+        public double TinhKhoangCach(Diem B)
+        {
+            return Math.Sqrt(Math.Pow(B.X - X, 2) + Math.Pow(B.Y - Y, 2));
         }
     }
 }
