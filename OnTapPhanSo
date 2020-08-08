@@ -1,0 +1,61 @@
+// Màn hình phân số
+@using WebApplication12
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        PhanSo A = new PhanSo();
+        PhanSo B = new PhanSo();
+        PhanSo kq = new PhanSo();
+        A.KhoiTao(Request["ps1"]);
+        B.KhoiTao(Request["ps2"]);
+        kq = A.TinhTong(B);
+        chuoi = kq.Xuat();
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/PhanSo.cshtml" method="post">
+            Nhập phân số thứ nhất: <br />
+            <input type="text" name="ps1" value="@Request["ps1"]" placeholder="1/2" /><br />
+            Nhập phân số thứ hai: <br />
+            <input type="text" name="ps2" value="@Request["ps2"]" placeholder="3/4" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+// Xử lý phân số
+namespace WebApplication12
+{
+    public class PhanSo
+    {
+        public int TuSo;
+        public int MauSo;
+        public void KhoiTao(string s)
+        {
+            var M = s.Split('/');
+            TuSo = int.Parse(M[0]);
+            MauSo = int.Parse(M[1]);
+        }
+        public PhanSo TinhTong(PhanSo P)
+        {
+            PhanSo kq = new PhanSo();
+            kq.TuSo = TuSo * P.MauSo + MauSo * P.TuSo;
+            kq.MauSo = MauSo * P.MauSo;
+            return kq;
+        }
+        public string Xuat()
+        {
+            return $"{TuSo}/{MauSo}";
+        }
+    }
+}
