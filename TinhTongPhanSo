@@ -1,0 +1,42 @@
+using System;
+class PhanSo
+{
+    public int TuSo;
+    public int MauSo;
+
+    public void NhapPhanSo(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap tu so: ");
+        TuSo = int.Parse(Console.ReadLine());
+        Console.Write("Nhap mau so: ");
+        MauSo = int.Parse(Console.ReadLine());
+    }
+    public PhanSo TinhTong(PhanSo B)
+    {
+        PhanSo kq = new PhanSo();
+        kq.TuSo = TuSo * B.MauSo + MauSo * B.TuSo;
+        kq.MauSo = MauSo * B.MauSo;
+        return kq;
+    }
+    public string Xuat()
+    {
+        return $"{TuSo}/{MauSo}";
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        PhanSo A = new PhanSo();
+        PhanSo B = new PhanSo();
+        A.NhapPhanSo("Nhap phan so a: ");
+        B.NhapPhanSo("Nhap phan so b: ");
+        PhanSo kq = new PhanSo();
+        kq = A.TinhTong(B);
+        string chuoi = "Ket qua la: " + kq.Xuat();
+        Console.WriteLine(chuoi);
+        Console.ReadLine();
+    }
+}
