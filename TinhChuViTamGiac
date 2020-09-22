@@ -25,19 +25,19 @@ class TamGiac
     public void NhapTamGiac(string ghiChu)
     {
         Console.WriteLine(ghiChu);
-        A = new Diem();
-        A.NhapDiem("Nhap diem A: ");
-        B = new Diem();
-        B.NhapDiem("Nhap diem B: ");
-        C = new Diem();
-        C.NhapDiem("Nhap diem C: ");
+        this.A = new Diem();
+        this.A.NhapDiem("Nhap diem A: ");
+        this.B = new Diem();
+        this.B.NhapDiem("Nhap diem B: ");
+        this.C = new Diem();
+        this.C.NhapDiem("Nhap diem C: ");
     }
     public double TinhChuVi()
     {
         double kq = 0;
-        kq += A.TinhKhoangCach(B);
-        kq += B.TinhKhoangCach(C);
-        kq += C.TinhKhoangCach(A);
+        kq += this.A.TinhKhoangCach(this.B);
+        kq += this.B.TinhKhoangCach(this.C);
+        kq += this.C.TinhKhoangCach(this.A);
         return kq;
     }
 }
