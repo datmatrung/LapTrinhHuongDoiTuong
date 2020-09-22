@@ -1,0 +1,55 @@
+using System;
+class Diem
+{
+    public int X;
+    public int Y;
+    public void NhapDiem(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap toa do X: ");
+        X = int.Parse(Console.ReadLine());
+        Console.Write("Nhap toa do Y: ");
+        Y = int.Parse(Console.ReadLine());
+    }
+    public double TinhKhoangCach(Diem B)
+    {
+        return Math.Sqrt(Math.Pow(X - B.X, 2) + Math.Pow(Y - B.Y, 2));
+    }
+}
+class TamGiac
+{
+    public Diem A;
+    public Diem B;
+    public Diem C;
+    
+    public void NhapTamGiac(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        A = new Diem();
+        A.NhapDiem("Nhap diem A: ");
+        B = new Diem();
+        B.NhapDiem("Nhap diem B: ");
+        C = new Diem();
+        C.NhapDiem("Nhap diem C: ");
+    }
+    public double TinhChuVi()
+    {
+        double kq = 0;
+        kq += A.TinhKhoangCach(B);
+        kq += B.TinhKhoangCach(C);
+        kq += C.TinhKhoangCach(A);
+        return kq;
+    }
+}
+class Program
+{
+    static void Main(string[] args)
+    {
+        TamGiac T = new TamGiac();
+        T.NhapTamGiac("Nhap tam giac: ");
+        double kq = T.TinhChuVi();
+        string chuoi = "Ket qua la: " + kq;
+        Console.WriteLine(chuoi);
+        Console.ReadLine();
+    }
+}
