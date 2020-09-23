@@ -1,0 +1,57 @@
+using System;
+class Diem
+{
+    public int X;
+    public int Y;
+    public void NhapDiem(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap toa do X: ");
+        X = int.Parse(Console.ReadLine());
+        Console.Write("Nhap toa do Y: ");
+        Y = int.Parse(Console.ReadLine());
+    }
+    public double TinhKhoangCach(Diem B)
+    {
+        return Math.Sqrt(Math.Pow(X - B.X, 2) + Math.Pow(Y - B.Y, 2));
+    }
+}
+class DaGiac
+{
+    public Diem[] dsDinh;
+    public void NhapDaGiac(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap so dinh cua da giac: ");
+        int N = int.Parse(Console.ReadLine());
+        dsDinh = new Diem[N];
+        for(int i = 0; i < N; i++)
+        {
+            dsDinh[i] = new Diem();
+            dsDinh[i].NhapDiem($"Nhap dinh thu {i}: ");
+        }    
+    }
+    public double TinhChuVi()
+    {
+        int N = dsDinh.Length;
+        double kq = 0;
+        for(int i = 0; i < N - 1; i++)
+        {
+            kq += dsDinh[i].TinhKhoangCach(dsDinh[i + 1]);
+        }  
+        kq += dsDinh[N - 1].TinhKhoangCach(dsDinh[0]);
+        return kq;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        DaGiac D = new DaGiac();
+        D.NhapDaGiac("Nhap da giac: ");
+        double kq = D.TinhChuVi();
+        Console.WriteLine("Ket qua la: " + kq);
+        Console.ReadLine();
+    }
+}
