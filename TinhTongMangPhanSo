@@ -1,0 +1,66 @@
+using System;
+class PhanSo
+{
+    public int TuSo;
+    public int MauSo;
+
+    public void NhapPhanSo(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap tu so: ");
+        TuSo = int.Parse(Console.ReadLine());
+        Console.Write("Nhap mau so: ");
+        MauSo = int.Parse(Console.ReadLine());
+    }
+    public PhanSo TinhTong(PhanSo B)
+    {
+        PhanSo kq = new PhanSo();
+        kq.TuSo = TuSo * B.MauSo + MauSo * B.TuSo;
+        kq.MauSo = MauSo * B.MauSo;
+        return kq;
+    }
+    public string Xuat()
+    {
+        return $"{TuSo}/{MauSo}";
+    }
+}
+class MangPhanSo
+{
+    public PhanSo[] dsPhanSo;
+    public void NhapMangPhanSo(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap so luong phan so: ");
+        int N = int.Parse(Console.ReadLine());
+        dsPhanSo = new PhanSo[N];
+        for(int i = 0; i < N; i++)
+        {
+            dsPhanSo[i] = new PhanSo();
+            dsPhanSo[i].NhapPhanSo($"Nhap phan so thu {i}");
+        }    
+    }
+    public PhanSo TinhTong()
+    {
+        PhanSo kq = new PhanSo();
+        kq.TuSo = 0; kq.MauSo = 1;
+        int N = dsPhanSo.Length;
+        for (int i = 0; i < N; i++)
+        {
+            kq = kq.TinhTong(dsPhanSo[i]);
+        }
+        return kq;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        MangPhanSo mangPS = new MangPhanSo();
+        mangPS.NhapMangPhanSo("Nhap mang phan so: ");
+        PhanSo kq = new PhanSo();
+        kq = mangPS.TinhTong();
+        Console.WriteLine("Ket qua la: " + kq.Xuat());
+        Console.ReadLine();
+    }
+}
