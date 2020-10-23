@@ -1,0 +1,36 @@
+using System;
+class PhanSo
+{
+    private int TuSo;
+    private int MauSo;
+    public int LayTuSo()
+    {
+        return this.TuSo;
+    }
+    public void GanTuSo(int t)
+    {
+        this.TuSo = t;
+    }
+    public int LayMauSo()
+    {
+        return this.MauSo;
+    }
+    public void GanMauSo(int m)
+    {
+        if (m != 0)
+        {
+            this.MauSo = m;
+        }
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        PhanSo A = new PhanSo();
+        A.GanTuSo(7);
+        A.GanMauSo(0);
+        Console.WriteLine($"{A.LayTuSo()}/{A.LayMauSo()}");
+        Console.ReadLine();
+    }
+}
