@@ -36,12 +36,14 @@ class Program
 }
 
 
+//Cách 2: Hàm thuộc tính
 
 using System;
 class PhanSo
 {
     private int TuSo;
     private int MauSo;
+    
     public int TUSO
     {
         get
@@ -81,6 +83,7 @@ class Program
 }
 
 
+//Cách 3: Viết ngắn gọn
 
 using System;
 class PhanSo
