@@ -79,3 +79,38 @@ class Program
         Console.ReadLine();
     }
 }
+
+
+
+using System;
+class PhanSo
+{
+    public int TUSO { get; set; }
+    private int MauSo;
+    
+    public int MAUSO
+    {
+        get
+        {
+            return this.MauSo;
+        }
+        set
+        {
+            if (value != 0)
+            {
+                this.MauSo = value;
+            }
+        }
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        PhanSo A = new PhanSo();
+        A.TUSO = 7;
+        A.MAUSO = 8;
+        Console.WriteLine($"{A.TUSO}/{A.MAUSO}");
+        Console.ReadLine();
+    }
+}
