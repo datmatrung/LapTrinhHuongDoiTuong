@@ -90,10 +90,9 @@ class Program
 using System;
 class PhanSo
 {
-    private int TuSo;
+    public int TUSO { get; set; }
     private int MauSo;
 
-    public int TUSO { get; set; }
     public int MAUSO
     {
         get
@@ -123,7 +122,7 @@ class Program
 
 
 
-//Hàm tạo:
+//Cách 4: Hàm tạo
 
 using System;
 class PhanSo
@@ -148,7 +147,17 @@ class PhanSo
             this.MauSo = 1;
         }
     }
-    public int TUSO { get; set; }
+    public int TUSO
+    {
+        get
+        {
+            return this.TuSo;
+        }
+        set
+        {
+            this.MauSo = value;
+        }
+    }
     public int MAUSO
     {
         get
