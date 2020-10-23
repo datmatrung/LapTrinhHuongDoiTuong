@@ -117,3 +117,43 @@ class Program
         Console.ReadLine();
     }
 }
+
+
+
+//Hàm tạo:
+
+using System;
+class PhanSo
+{
+    public int TUSO { get; set; }
+    private int MauSo;
+    
+    public PhanSo()
+    {
+        this.TUSO = 0;
+        this.MauSo = 1;
+    }
+    public int MAUSO
+    {
+        get
+        {
+            return this.MauSo;
+        }
+        set
+        {
+            if (value != 0)
+            {
+                this.MauSo = value;
+            }
+        }
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        PhanSo A = new PhanSo();
+        Console.WriteLine($"{A.TUSO}/{A.MAUSO}");
+        Console.ReadLine();
+    }
+}
