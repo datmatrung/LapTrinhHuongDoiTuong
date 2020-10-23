@@ -1,3 +1,5 @@
+//Cách 1: Tự viết hàm get và set
+
 using System;
 class PhanSo
 {
