@@ -88,9 +88,10 @@ class Program
 using System;
 class PhanSo
 {
-    public int TUSO { get; set; }
+    private int TuSo;
     private int MauSo;
-    
+
+    public int TUSO { get; set; }
     public int MAUSO
     {
         get
@@ -125,17 +126,17 @@ class Program
 using System;
 class PhanSo
 {
-    public int TUSO { get; set; }
+    private int TuSo;
     private int MauSo;
-    
+
     public PhanSo()
     {
-        this.TUSO = 0;
+        this.TuSo = 0;
         this.MauSo = 1;
     }
     public PhanSo(int t, int m)
     {
-        this.TUSO = t;
+        this.TuSo = t;
         if (m != 0)
         {
             this.MauSo = m;
@@ -145,6 +146,7 @@ class PhanSo
             this.MauSo = 1;
         }
     }
+    public int TUSO { get; set; }
     public int MAUSO
     {
         get
