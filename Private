@@ -147,6 +147,12 @@ class PhanSo
             this.MauSo = 1;
         }
     }
+    public PhanSo(PhanSo A)
+    {
+        this.TuSo = A.TuSo;
+        this.MauSo = A.MauSo;
+    }
+    
     public int TUSO
     {
         get
