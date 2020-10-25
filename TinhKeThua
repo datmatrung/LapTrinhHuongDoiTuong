@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+
+class HINH
+{
+    public string TenHinh { set; get; }
+    public void Nhap(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap ten hinh: ");
+        this.TenHinh = Console.ReadLine();
+    }
+}
+class HCN : HINH
+{
+    public double CanhA { set; get; }
+    public double CanhB { set; get; }
+    public new void Nhap(string ghiChu)
+    {
+        base.Nhap(ghiChu);
+        Console.Write("Nhap canh a: ");
+        this.CanhA = double.Parse(Console.ReadLine());
+        Console.Write("Nhap canh b: ");
+        this.CanhB = double.Parse(Console.ReadLine());
+    }
+    public double TinhChuVi()
+    {
+        return (this.CanhA + this.CanhB) * 2;
+    }
+}
+class HVUONG : HINH
+{
+    public double CanhA { set; get; }
+    public new void Nhap(string ghiChu)
+    {
+        base.Nhap(ghiChu);
+        Console.Write("Nhap canh a: ");
+        this.CanhA = double.Parse(Console.ReadLine());
+    }
+    public double TinhChuVi()
+    {
+        return this.CanhA * 4;
+    }
+}
+class HTRON : HINH
+{
+    public double BanKinh { set; get; }
+    public new void Nhap(string ghiChu)
+    {
+        base.Nhap(ghiChu);
+        Console.Write("Nhap ban kinh: ");
+        this.BanKinh = double.Parse(Console.ReadLine());
+    }
+    public double TinhChuVi()
+    {
+        return this.BanKinh * 2 * Math.PI;
+    }
+}
+class MATPHANG
+{
+    private List<HCN> dsHCN;
+    private List<HVUONG> dsHVUONG;
+    private List<HTRON> dsHTRON;
+    public MATPHANG()
+    {
+        dsHCN = new List<HCN>();
+        dsHVUONG = new List<HVUONG>();
+        dsHTRON = new List<HTRON>();
+    }
+    public void Nhap(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        int N;
+        Console.Write("Nhap so luong HCN: ");
+        N = int.Parse(Console.ReadLine());
+        for (int i = 0; i < N; i++)
+        {
+            HCN hcn = new HCN();
+            hcn.Nhap($"Nhap HCN thu {i + 1}: ");
+            this.dsHCN.Add(hcn);
+        }
+        Console.Write("Nhap so luong HVUONG: ");
+        N = int.Parse(Console.ReadLine());
+        for (int i = 0; i < N; i++)
+        {
+            HVUONG hvuong = new HVUONG();
+            hvuong.Nhap($"Nhap HVUONG thu {i + 1}: ");
+            this.dsHVUONG.Add(hvuong);
+        }
+        Console.Write("Nhap so luong HTRON: ");
+        N = int.Parse(Console.ReadLine());
+        for (int i = 0; i < N; i++)
+        {
+            HTRON htron = new HTRON();
+            htron.Nhap($"Nhap HTRON thu {i + 1}: ");
+            this.dsHTRON.Add(htron);
+        }
+    }
+    public double TinhChuVi()
+    {
+        double kq = 0;
+        foreach (var hcn in this.dsHCN)
+        {
+            kq += hcn.TinhChuVi();
+        }
+        foreach (var hvuong in this.dsHVUONG)
+        {
+            kq += hvuong.TinhChuVi();
+        }
+        foreach (var htron in this.dsHTRON)
+        {
+            kq += htron.TinhChuVi();
+        }
+        return kq;
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        MATPHANG P = new MATPHANG();
+        P.Nhap("Nhap mat phang P: ");
+        double kq = P.TinhChuVi();
+        Console.WriteLine($"Ket qua la {kq}");
+        Console.ReadLine();
+    }
+}
