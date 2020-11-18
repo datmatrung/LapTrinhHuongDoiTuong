@@ -1,0 +1,110 @@
+using System;
+using System.Collections.Generic;
+
+class HINH
+{
+    public string TenHinh { set; get; }
+    public virtual void Nhap(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap ten hinh: ");
+        this.TenHinh = Console.ReadLine();
+    }
+    public virtual double TinhChuVi()
+    {
+        return 0;
+    }
+}
+class HCN : HINH
+{
+    public double CanhA { set; get; }
+    public double CanhB { set; get; }
+    public override void Nhap(string ghiChu)
+    {
+        base.Nhap(ghiChu);
+        Console.Write("Nhap canh a: ");
+        this.CanhA = double.Parse(Console.ReadLine());
+        Console.Write("Nhap canh b: ");
+        this.CanhB = double.Parse(Console.ReadLine());
+    }
+    public override double TinhChuVi()
+    {
+        return (this.CanhA + this.CanhB) * 2;
+    }
+}
+class HVUONG : HINH
+{
+    public double CanhA { set; get; }
+    public override void Nhap(string ghiChu)
+    {
+        base.Nhap(ghiChu);
+        Console.Write("Nhap canh a: ");
+        this.CanhA = double.Parse(Console.ReadLine());
+    }
+    public override double TinhChuVi()
+    {
+        return this.CanhA * 4;
+    }
+}
+class HTRON : HINH
+{
+    public double BanKinh { set; get; }
+    public override void Nhap(string ghiChu)
+    {
+        base.Nhap(ghiChu);
+        Console.Write("Nhap ban kinh: ");
+        this.BanKinh = double.Parse(Console.ReadLine());
+    }
+    public override double TinhChuVi()
+    {
+        return this.BanKinh * 2 * Math.PI;
+    }
+}
+class MATPHANG
+{
+    private List<HINH> dsHINH;
+    public MATPHANG()
+    {
+        dsHINH = new List<HINH>();
+    }
+    public void Nhap(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap so luong hinh: ");
+        int N = int.Parse(Console.ReadLine());
+        for (int i = 0; i < N; i++)
+        {
+            Console.Write("Nhap loai hinh (1:HCN, 2:HVUONG, 3:HTRON): ");
+            int loai = int.Parse(Console.ReadLine());
+            HINH hinh;
+            if (loai == 1)
+                hinh = new HCN();
+            else if (loai == 2)
+                hinh = new HVUONG();
+            else
+                hinh = new HTRON();
+            hinh.Nhap($"Nhap hinh thu {i + 1}: ");
+            this.dsHINH.Add(hinh);
+        }
+    }
+    public double TinhChuVi()
+    {
+        double kq = 0;
+        foreach (var hinh in this.dsHINH)
+        {
+            kq += hinh.TinhChuVi();
+        }
+        return kq;
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        MATPHANG P = new MATPHANG();
+        P.Nhap("Nhap mat phang P: ");
+        double kq = P.TinhChuVi();
+        Console.WriteLine($"Ket qua la {kq}");
+        Console.ReadLine();
+    }
+}
