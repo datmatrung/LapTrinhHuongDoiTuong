@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+
+class NHANVIEN
+{
+    private int manv;
+    private string ten;
+    private string diaChi;
+    public virtual void NhapNhanVien(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap ma nhan vien: ");
+        this.manv = int.Parse(Console.ReadLine());
+        Console.Write("Nhap ten nhan vien: ");
+        this.ten = Console.ReadLine();
+        Console.Write("Nhap dia chi nhan vien: ");
+        this.diaChi = Console.ReadLine();
+    }
+    public virtual double TinhLuong()
+    {
+        return 0;
+    }
+}
+class NVSX : NHANVIEN
+{
+    private double soSanPham;
+
+    public override void NhapNhanVien(string ghiChu)
+    {
+        base.NhapNhanVien(ghiChu);
+        Console.Write("Nhap so san pham: ");
+        this.soSanPham = double.Parse(Console.ReadLine());
+    }
+    public override double TinhLuong()
+    {
+        return this.soSanPham * 2;
+    }
+}
+class NVVP : NHANVIEN
+{
+    private double heSoLuong;
+    private double phuCap;
+
+    public override void NhapNhanVien(string ghiChu)
+    {
+        base.NhapNhanVien(ghiChu);
+        Console.Write("Nhap he so luong: ");
+        this.heSoLuong = double.Parse(Console.ReadLine());
+        Console.Write("Nhap phu cap: ");
+        this.phuCap = double.Parse(Console.ReadLine());
+    }
+    public override double TinhLuong()
+    {
+        return this.heSoLuong * 100 + this.phuCap;
+    }
+}
+class CONGTY
+{
+    private string tenCongTy { get; set; }
+    private List<NHANVIEN> dsNV;
+    
+    public CONGTY()
+    {
+        dsNV = new List<NHANVIEN>();
+    }
+    public void Nhap(string ghiChu)
+    {
+        Console.WriteLine(ghiChu);
+        Console.Write("Nhap ten cong ty: ");
+        this.tenCongTy = Console.ReadLine();
+        int N;
+        Console.Write("Nhap so luong nhan vien: ");
+        N = int.Parse(Console.ReadLine());
+        for (int i = 0; i < N; i++)
+        {
+            Console.Write("Chon loai nhan vien (1:NVVP, 2:NVSX): ");
+            int loai = int.Parse(Console.ReadLine());
+            NHANVIEN nv;
+            if (loai == 1)
+                nv = new NVVP();
+            else
+                nv = new NVSX();
+            nv.NhapNhanVien($"Nhap nhan vien thu {i + 1}: ");
+            this.dsNV.Add(nv);
+        }
+    }
+    public double TinhTongLuong()
+    {
+        double kq = 0;
+        foreach (var nv in this.dsNV)
+        {
+            kq += nv.TinhLuong();
+        }
+        return kq;
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        CONGTY A = new CONGTY();
+        A.Nhap("Nhap thong tin cong ty: ");
+        double kq = A.TinhTongLuong();
+        Console.WriteLine($"Ket qua la {kq}");
+        Console.ReadLine();
+    }
+}
