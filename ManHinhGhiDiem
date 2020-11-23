@@ -1,0 +1,96 @@
+// Entity
+namespace Entity
+{
+    public class DIEM
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public DIEM()
+        {
+            this.X = 0;
+            this.Y = 0;
+        }
+        public DIEM(int x, int y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
+    }
+}
+
+// Màn hình ghi điểm
+@using Entity;
+@using BusinessServices;
+@{
+    string totalMessage = string.Empty;
+    if (IsPost)
+    {
+        int x = int.Parse(Request["x"]);
+        int y = int.Parse(Request["y"]);
+        var xlDIEM = new XL_DIEM();
+        var kq = xlDIEM.Ghi(x, y);
+        if (kq == true)
+        {
+            totalMessage = "Luu thanh cong";
+        }
+        else
+        {
+            totalMessage = "Luu that bai";
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/MH_GHI_DIEM.cshtml" method="post">
+            Nhap X: <br />
+            <input type="text" name="x"/><br />
+            Nhap Y: <br />
+            <input type="text" name="y"/><br />
+            <input type="submit" value="GHI" />
+        </form>
+        Ket qua la @totalMessage
+    </div>
+</body>
+</html>
+
+// Xử lý điêm
+using Entity;
+using DAL;
+
+namespace BusinessServices
+{
+    public class XL_DIEM
+    {
+        public bool Ghi(int x, int y)
+        {
+            DIEM p = new DIEM(x, y);
+            var luuTruDIEM = new LT_DIEM();
+            luuTruDIEM.Ghi(p);
+            return true;
+        }
+    }
+}
+
+// Lưu trữ điểm
+using Entity;
+using System.IO;
+
+namespace DAL
+{
+    public class LT_DIEM
+    {
+        private string filePath = "H:\\diem.txt";
+        public void Ghi(DIEM p)
+        {
+            StreamWriter file = new StreamWriter(filePath);
+            file.Write($"{p.X},{p.Y}");
+            file.Close();
+        }
+    }
+}
