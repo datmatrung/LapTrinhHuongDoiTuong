@@ -1,0 +1,192 @@
+// Entity
+namespace Entity
+{
+    public class SACH
+    {
+        public int MaSach { get; set; }
+        public string TenSach { get; set; }
+        public int Gia { get; set; }
+        public string TacGia { get; set; }
+        public int NamXuatBan { get; set; }
+
+        public SACH()
+        {
+        }
+
+        public SACH(string s)
+        {
+            string[] M = s.Split(',');
+            this.MaSach = int.Parse(M[0]);
+            this.TenSach = M[1];
+            this.Gia = int.Parse(M[2]);
+            this.TacGia = M[3];
+            this.NamXuatBan = int.Parse(M[4]);
+        }
+    }
+}
+
+// Lưu trữ sách
+using Entity;
+using System.Collections.Generic;
+using System.IO;
+
+namespace DAL
+{
+    public class LT_SACH
+    {
+        private string filePath = "H:\\dssach.txt";
+        public List<SACH> DocDanhSach()
+        {
+            List<SACH> dsSach = new List<SACH>();
+            StreamReader reader = new StreamReader(filePath);
+            while(reader.EndOfStream == false)
+            {
+                string s = reader.ReadLine();
+                var sach = new SACH(s);
+                dsSach.Add(sach);
+            }
+            reader.Close();
+            return dsSach;
+        }
+        public void LuuSach(SACH s)
+        {
+            var dsSach = DocDanhSach();
+            dsSach.Add(s);
+            LuuDanhSach(dsSach);
+        }
+        public void LuuDanhSach(List<SACH> dsSach)
+        {
+            StreamWriter writer = new StreamWriter(filePath);
+            for (int i = 0; i < dsSach.Count; i++)
+            {
+                var s = dsSach[i];
+                string line = $"{s.MaSach},{s.TenSach},{s.Gia},{s.TacGia},{s.NamXuatBan}";
+                if (i == dsSach.Count - 1)
+                {
+                    writer.Write(line);
+                }
+                else
+                {
+                    writer.WriteLine(line);
+                }
+            }
+            writer.Close();
+        }
+    }
+}
+
+// Xử lý sách
+using DAL;
+using Entity;
+using System.Collections.Generic;
+
+namespace BusinessServices
+{
+    public class XL_SACH
+    {
+        public List<SACH> LayDanhSach()
+        {
+            var ltSach = new LT_SACH();
+
+            var kq = ltSach.DocDanhSach();
+
+            return kq;
+        }
+        public void ThemSach(SACH s)
+        {
+            var ltSach = new LT_SACH();
+            ltSach.LuuSach(s);
+        }
+    }
+}
+
+// Màn hình ghi sách
+@using Entity;
+@using BusinessServices;
+@{
+    if (IsPost)
+    {
+        SACH s = new SACH();
+        s.MaSach = int.Parse(Request["masach"]);
+        s.TenSach = Request["tensach"];
+        s.Gia = int.Parse(Request["gia"]);
+        s.TacGia = Request["tacgia"];
+        s.NamXuatBan = int.Parse(Request["nam"]);
+
+        var xlSach = new XL_SACH();
+        xlSach.ThemSach(s);
+
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <div>
+        <form action="~/MH_GHI_SACH.cshtml" method="post">
+            <p>
+                <label for="text1">Ma Sach</label><br>
+                <input type="text" name="masach" value="" />
+            </p>
+            <p>
+                <label for="text2">Ten Sach</label><br>
+                <input type="text" name="tensach" value="" />
+            </p>
+            <p>
+                <label for="text1">Gia</label><br>
+                <input type="text" name="gia" value="" />
+            </p>
+            <p>
+                <label for="text2">Tac Gia</label><br>
+                <input type="text" name="tacgia" value="" />
+            </p>
+            <p>
+                <label for="text1">Nam Xuat Ban</label><br>
+                <input type="text" name="nam" value="" />
+            </p>
+
+            <p><input type="submit" value="GHI" /></p>
+        </form>
+    </div>
+</body>
+</html>
+    
+// Màn hình đọc sách
+@using Entity;
+@using BusinessServices;
+@{
+    string totalMessage = string.Empty;
+    var xlSach = new XL_SACH();
+    var dsSach = xlSach.LayDanhSach();
+}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <div>
+        <form action="~/MH_DOC_PHANSO.cshtml" method="post">
+            <p><input type="submit" value=" DOC " /></p>
+        </form>
+    </div>
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Ma Sach</th>
+                <th>Ten Sach</th>
+                <th>Gia</th>
+            </tr>
+            @foreach (SACH s in dsSach)
+            {
+             <tr>
+                <td>@s.MaSach</td>
+                <td>@s.TenSach</td>
+                <td>@s.Gia</td>
+             </tr>
+            }
+        </table>
+        
+    </div>
+</body>
+</html>
