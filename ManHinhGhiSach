@@ -9,10 +9,6 @@ namespace Entity
         public string TacGia { get; set; }
         public int NamXuatBan { get; set; }
 
-        public SACH()
-        {
-        }
-
         public SACH(string s)
         {
             string[] M = s.Split(',');
@@ -87,9 +83,7 @@ namespace BusinessServices
         public List<SACH> LayDanhSach()
         {
             var ltSach = new LT_SACH();
-
             var kq = ltSach.DocDanhSach();
-
             return kq;
         }
         public void ThemSach(SACH s)
@@ -112,10 +106,8 @@ namespace BusinessServices
         s.Gia = int.Parse(Request["gia"]);
         s.TacGia = Request["tacgia"];
         s.NamXuatBan = int.Parse(Request["nam"]);
-
         var xlSach = new XL_SACH();
         xlSach.ThemSach(s);
-
     }
 }
 <!DOCTYPE html>
@@ -186,7 +178,6 @@ namespace BusinessServices
              </tr>
             }
         </table>
-        
     </div>
 </body>
 </html>
