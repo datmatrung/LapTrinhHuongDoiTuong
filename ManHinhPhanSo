@@ -1,4 +1,102 @@
-// Màn hình phân số
+// Entity
+namespace Entity
+{
+    public class PHANSO
+    {
+        public int tuSo { get; set; }
+        private int mauSo;
+        public int MauSo
+        {
+            get
+            {
+                return this.mauSo;
+            }
+            set
+            {
+                if (value != 0)
+                {
+                    this.mauSo = value;
+                }
+            }
+        }
+        public PHANSO()
+        {
+            this.tuSo = 0;
+            this.mauSo = 1;
+        }
+        public PHANSO(int t, int m)
+        {
+            this.tuSo = t;
+            if (m != 0)
+                this.mauSo = m;
+            else
+                this.mauSo = 1;
+        }
+        public PHANSO(string s)
+        {
+            var M = s.Split('/');
+            this.tuSo = int.Parse(M[0]);
+            this.mauSo = int.Parse(M[1]);
+        }
+        public static bool LaHopLe(int t, int m)
+        {
+            return m != 0;
+        }
+    }
+}
+
+// Xử lý phân số
+using Entity;
+using DAL;
+namespace BusinessServices
+{
+    public class XL_PHANSO
+    {
+        public bool Ghi(int t, int m)
+        {
+            if (PHANSO.LaHopLe(t, m))
+            {
+                PHANSO p = new PHANSO(t, m);
+                var luuTruPhanSo = new LT_PHANSO();
+                luuTruPhanSo.Ghi(p);
+                return true;
+            }
+            return false;
+        }
+        public PHANSO Doc()
+        {
+            var luuTruPhanSo = new LT_PHANSO();
+            var p = luuTruPhanSo.Doc();
+            return p;
+        }
+    }
+}
+
+// Lưu trữ phân số
+using Entity;
+namespace DAL
+{
+    public class LT_PHANSO
+    {
+        private string filePath = "H:\\phanso.txt";
+        public void Ghi(PHANSO p)
+        {
+            StreamWriter file = new StreamWriter(filePath);
+            file.Write($"{p.tuSo}/{p.MauSo}");
+            file.Close();
+        }
+        public PHANSO Doc()
+        {
+            StreamReader file = new StreamReader(filePath);
+            string s = file.ReadLine();
+            var p = new PHANSO(s);
+            file.Close();
+            return p;
+        }
+    }
+}
+
+// Màn hình ghi phân số
 @using Entity;
 @using BusinessServices;
 @{
@@ -39,80 +137,33 @@
 </body>
 </html>
 
-// Entity
-namespace Entity
-{
-    public class PHANSO
+// Màn hình đọc phân số
+@using Entity;
+@using BusinessServices;
+@{
+    string totalMessage = string.Empty;
+    PHANSO p = new PHANSO();
+    if (IsPost)
     {
-        public int tuSo { get; set; }
-        private int mauSo;
-        public int MauSo
-        {
-            get
-            {
-                return this.mauSo;
-            }
-            set
-            {
-                if (value != 0)
-                {
-                    this.mauSo = value;
-                }
-            }
-        }
-        public PHANSO()
-        {
-            this.tuSo = 0;
-            this.mauSo = 1;
-        }
-        public PHANSO(int t, int m)
-        {
-            this.tuSo = t;
-            if (m != 0)
-                this.mauSo = m;
-            else
-                this.mauSo = 1;
-        }
-        public static bool LaHopLe(int t, int m)
-        {
-            return m != 0;
-        }
+        var xlPhanSo = new XL_PHANSO();
+        p = xlPhanSo.Doc();
     }
 }
-
-// Xử lý phân số
-using Entity;
-using DAL;
-namespace BusinessServices
-{
-    public class XL_PHANSO
-    {
-        public bool Ghi(int t, int m)
-        {
-            if (PHANSO.LaHopLe(t, m))
-            {
-                PHANSO p = new PHANSO(t, m);
-                var luuTruPhanSo = new LT_PHANSO();
-                luuTruPhanSo.Ghi(p);
-                return true;
-            }
-            return false;
-        }
-    }
-}
-
-// Lưu trữ phân số
-using Entity;
-namespace DAL
-{
-    public class LT_PHANSO
-    {
-        private string filePath = "H:\\phanso.txt";
-        public void Ghi(PHANSO p)
-        {
-            StreamWriter file = new StreamWriter(filePath);
-            file.Write($"{p.tuSo}/{p.MauSo}");
-            file.Close();
-        }
-    }
-}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/MH_DOC_PHANSO.cshtml" method="post">
+            Nhap tu so: <br />
+            <input type="text" name="tu" value="@p.tuSo"/><br />
+            Nhap mau so: <br />
+            <input type="text" name="mau" value="@p.MauSo"/><br />
+            <input type="submit" value="DOC" />
+        </form>
+    </div>
+</body>
+</html>
