@@ -40,6 +40,17 @@ class TamGiac
         kq += this.C.TinhKhoangCach(this.A);
         return kq;
     }
+    public string KiemTraHopLe()
+    {
+        double a, b, c;
+        a = B.TinhKhoangCach(C);
+        b = A.TinhKhoangCach(C);
+        c = A.TinhKhoangCach(B);
+        if ((a+b>c) && (a+c>b) && (b+c>a))
+            return "hop le";
+        else
+            return "khong hop le";
+    }
 }
 class Program
 {
@@ -50,6 +61,8 @@ class Program
         double kq = T.TinhChuVi();
         string chuoi = "Ket qua la: " + kq;
         Console.WriteLine(chuoi);
+        var kiemtrahople = T.KiemTraHopLe();
+        Console.WriteLine("3 dinh tam giac la " + kiemtrahople);
         Console.ReadLine();
     }
 }
